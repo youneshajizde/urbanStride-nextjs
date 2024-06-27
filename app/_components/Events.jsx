@@ -1,6 +1,8 @@
 import React from "react";
 import Image from "next/image";
 import bannerRight from "../_images/banner-right.png";
+import bannerLeft from "../_images/banner-left.png";
+
 import { Button } from "@/components/ui/button";
 function Events() {
   return (
@@ -8,6 +10,12 @@ function Events() {
       {" "}
       <section className="grid grid-cols-1 md:grid-cols-3 gap-4 h-[380px] mt-6">
         <div className="md:col-span-2 h-[300px] md:h-auto bg-gray-100 p-4 rounded-3xl relative">
+          <Image
+            src={bannerLeft}
+            width={0}
+            height={0}
+            className="w-[280px] hidden lg:block absolute bottom-4 right-7 "
+          />
           <div className="">
             <h2 className="font-semibold bg-gradient-to-r from-orange-600 to-orange-800 bg-clip-text text-transparent">
               NEW ARRIVAL!
