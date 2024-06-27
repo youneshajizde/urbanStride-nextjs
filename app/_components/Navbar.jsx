@@ -12,7 +12,7 @@ function Navbar() {
       </h2>
       <div className="w-[600px]">
         <Input
-          className="rounded-full w-full outline-none focus:outline-none focus:ring-0"
+          className="rounded-full w-full  outline-none focus:outline-none focus:ring-0"
           placeholder="try 'NIKE air jordan'"
         />
       </div>
