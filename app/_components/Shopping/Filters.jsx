@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import {
   Select,
@@ -29,6 +29,7 @@ function Filters({
   onGroupChange,
 }) {
   const [categories, setCategories] = useState([]);
+  const [selectedBrand, setSelectedBrand] = useState("Brand");
   const [selectedColor, setSelectedColor] = useState(null);
   const [selectedGroup, setSelectedGroup] = useState(null);
 
@@ -43,6 +44,7 @@ function Filters({
   }, []);
 
   const handleBrandSelect = (brand) => {
+    setSelectedBrand(brand);
     onBrandChange(brand);
   };
 
@@ -64,8 +66,19 @@ function Filters({
     onGroupChange(group);
   };
 
+  const handleReset = () => {
+    setSelectedBrand("Brand");
+    onBrandChange(null);
+    onPriceChange(null);
+    onSizeChange(null);
+    setSelectedColor(null);
+    onColorChange(null);
+    setSelectedGroup(null);
+    onGroupChange(null);
+  };
+
   return (
-    <div className="filters flex items-center gap-2 bg-white border-2 rounded-full max-w-[500px] h-16 mx-auto mt-7 p-3">
+    <div className="filters flex items-center gap-2 bg-white border-2 rounded-full max-w-[550px] h-16 mx-auto mt-7 p-3">
       <Select onValueChange={handleBrandSelect}>
         <SelectTrigger className="w-[170px] rounded-full bg-gray-200 font-semibold">
           <SelectValue placeholder="Brand" />
@@ -168,6 +181,12 @@ function Filters({
           </RadioGroup>
         </PopoverContent>
       </Popover>
+      <button
+        onClick={handleReset}
+        className="rounded-full bg-gray-200 text-black hover:bg-gray-100 py-2 px-4 font-normal"
+      >
+        Reset
+      </button>
     </div>
   );
 }

@@ -19,7 +19,6 @@ function Shop() {
     let page = 1;
     let pageSize = 25;
     let total = 0;
-
     try {
       do {
         const response = await GlobalApi.getAllProducts(page, pageSize);
@@ -77,15 +76,24 @@ function Shop() {
         product.attributes.price <= 900000) ||
       (selectedPrice === "Highest" && product.attributes.price > 900000);
     const matchesSize =
-      !selectedSize || product.attributes.shoeSize.shoeSizes.includes(parseInt(selectedSize));
+      !selectedSize ||
+      product.attributes.shoeSize.shoeSizes.includes(parseInt(selectedSize));
     const matchesColor =
       !selectedColor || product.attributes.color === selectedColor;
     const matchesGroup =
-      !selectedGroup || product.attributes.gender.toLowerCase() === selectedGroup;
+      !selectedGroup ||
+      product.attributes.gender.toLowerCase() === selectedGroup;
 
-    return matchesBrand && matchesPrice && matchesSize && matchesColor && matchesGroup;
+    return (
+      matchesBrand &&
+      matchesPrice &&
+      matchesSize &&
+      matchesColor &&
+      matchesGroup
+    );
   });
 
+  console.log(filteredProducts);
   return (
     <section className="mt-24">
       <div className="text-center space-y-4">
