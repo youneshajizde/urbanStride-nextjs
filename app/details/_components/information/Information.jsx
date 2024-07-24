@@ -11,7 +11,7 @@ import {
 import avatar from "./avatar.jpg";
 import Image from "next/image";
 
-function Information() {
+function Information({ details }) {
   const [activeSection, setActiveSection] = useState("shipment");
   const [ratings, setRatings] = useState([
     {
@@ -22,7 +22,7 @@ function Information() {
     },
   ]);
   const user = JSON.parse(sessionStorage.getItem("user"));
-  const [userRating, setUserRating] = useState(5);
+  const [userRating, setUserRating] = useState(details?.attributes?.rate);
   const [userComment, setUserComment] = useState("");
   const calculateAverageRating = () => {
     if (ratings.length === 0) return 0;
@@ -149,15 +149,18 @@ function Information() {
 
         {activeSection === "overview" && (
           <div className="overview py-4">
-            <h3 className="text-xl font-semibold">Jordan Airmax</h3>
+            <h3 className="text-xl font-semibold">
+              {details?.attributes?.name}
+            </h3>
             <p className="text-sm font-medium mt-5">
-              The Nike Air Max 270 is a versatile and stylish shoe that combines
-              both comfort and performance. Designed with a sleek silhouette, it
-              features a breathable mesh upper that ensures maximum ventilation
-              during activities. The highlight of this shoe is its signature Air
-              Max unit, providing exceptional cushioning and impact protection,
-              making it ideal for long walks or runs. Additionally, its durable
-              rubber outsole offers excellent traction on various surfaces
+              The {details?.attributes?.name} is a versatile and stylish shoe
+              that combines both comfort and performance. Designed with a sleek
+              silhouette, it features a breathable mesh upper that ensures
+              maximum ventilation during activities. The highlight of this shoe
+              is its signature Air Max unit, providing exceptional cushioning
+              and impact protection, making it ideal for long walks or runs.
+              Additionally, its durable rubber outsole offers excellent traction
+              on various surfaces
             </p>
           </div>
         )}

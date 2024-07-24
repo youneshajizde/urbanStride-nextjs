@@ -10,6 +10,8 @@ const getAllProducts = () => axiosClient.get("/products?populate=*");
 
 const getBrands = () => axiosClient.get("/categories?populate=*");
 
+const getProductById = (id) => axiosClient.get(`/products/${id}?populate=*`);
+
 const registerUser = (username, email, password) =>
   axiosClient.post("/auth/local/register", {
     username: username,
@@ -29,4 +31,5 @@ export default {
   getBrands,
   registerUser,
   signUpUser,
+  getProductById,
 };

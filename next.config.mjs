@@ -1,7 +1,7 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   images: {
-    domains: ["localhost"],
+    domains: ["localhost", "http://localhost:1337"], // Add your API domain here
   },
   theme: {
     extend: {
