@@ -10,11 +10,12 @@ import Information from "../_components/information/Information";
 import GlobalApi from "@/lib/GlobalApi";
 function page({ params }) {
   const [details, setDetails] = useState(null);
-
+  const [brandDetails, setBrandDetails] = useState([]);
   useEffect(() => {
     if (params?.id) {
       fetchProductDetails();
     }
+    fetchCategories();
   }, [params?.id]);
 
   const fetchProductDetails = async () => {
@@ -26,7 +27,22 @@ function page({ params }) {
     }
   };
 
-  
+  const fetchCategories = async () => {
+    try {
+      GlobalApi.getBrands().then((resp) => {
+        setBrandDetails(resp.data.data);
+      });
+    } catch (error) {
+      console.log("failed to fetch categories details:", error);
+    }
+  };
+  useEffect(() => {
+    if (brandDetails.length > 0) {
+      console.log(
+        process.env.NEXT_PUBLIC_STRAPI_URL + brandDetails[0].attributes
+      ); 
+    }
+  }, [brandDetails]);
 
   return (
     <main className="w-[94%] mx-auto ">
@@ -43,6 +59,7 @@ function page({ params }) {
         }
         details={details}
         dDiscount={details?.attributes?.discount}
+        dbrandLogo={brandDetails}
       />
 
       <Information details={details} />
