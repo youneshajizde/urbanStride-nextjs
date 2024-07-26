@@ -18,6 +18,7 @@ function ProductDetail({
   dImg,
   dDiscount,
   details,
+  dbrandLogo,
 }) {
   const [selectedSize, setSelectedSize] = useState(dSizes ? dSizes[0] : null);
   const [imageUrls, setImageUrls] = useState([]);
@@ -93,12 +94,10 @@ function ProductDetail({
         </h2>
         <h1 className="font-semibold text-3xl mt-2">{dName}</h1>
         <span className="flex items-center gap-3 mt-4">
-          <div className="relative rounded-full h-10 w-10 border-2 border-gray-200">
-            <img
-              src={brand}
-              className="rounded-lg object-cover w-full h-full"
-            />
+          <div className="relative rounded-full h-10 w-10 border-2 border-gray-200 overflow-hidden">
+            <img src={dbrandLogo} className="object-contain w-full h-full" />
           </div>
+
           <h3 className="font-semibold flex items-center gap-2">
             {dBrand} <img src={verify} width={17} height={17} />
             <span className="text-gray-300">•</span>

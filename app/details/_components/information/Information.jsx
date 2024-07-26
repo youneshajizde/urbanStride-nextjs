@@ -47,7 +47,7 @@ function Information({ details }) {
         { username: user.username, rating: userRating, comment: userComment },
       ]);
       setUserComment("");
-      setUserRating(5); // Reset rating to default
+      setUserRating(5);
     }
   };
 
@@ -80,7 +80,7 @@ function Information({ details }) {
   ];
 
   return (
-    <section className="grid grid-cols-2 mt-6 p-2 gap-5">
+    <section className="grid grid-cols-1 md:grid-cols-2 mt-6 p-2 gap-5">
       <div>
         <h1 className="text-lg font-semibold">Product Info</h1>
         <span className="flex items-center gap-8 text-sm mt-2">

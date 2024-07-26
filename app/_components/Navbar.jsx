@@ -44,9 +44,26 @@ function Navbar() {
     setIsLogged(!!token);
     if (user) {
       setUsername(user.username);
-      setShowBadge(true);
+    }
+
+    // Check badge status only if logged in
+    if (token) {
+      const badgeStatus = localStorage.getItem("badgeStatus");
+      setShowBadge(badgeStatus === "visible");
     }
   }, []);
+
+  useEffect(() => {
+    if (isLogged) {
+      // Always show badge when logged in
+      localStorage.setItem("badgeStatus", "visible");
+      setShowBadge(true);
+    } else {
+      // Hide badge if not logged in
+      localStorage.setItem("badgeStatus", "hidden");
+      setShowBadge(false);
+    }
+  }, [isLogged]);
 
   const handleSearch = (e) => {
     const value = e.target.value;
@@ -65,8 +82,11 @@ function Navbar() {
     setMenuOpen(!menuOpen);
   };
 
-  const handleNotificationOpen = () => {
-    setShowBadge(false); // Remove the badge when the notification popover is opened
+  const handleNotificationOpen = (open) => {
+    if (open) {
+      setShowBadge(false);
+      localStorage.setItem("badgeStatus", "hidden");
+    }
   };
 
   return (
@@ -81,7 +101,7 @@ function Navbar() {
 
         <div className="w-[600px] relative">
           <Input
-            className="rounded-full w-full  outline-none focus:outline-none focus:ring-0"
+            className="rounded-full w-full outline-none focus:outline-none focus:ring-0"
             placeholder="try 'NIKE air jordan'"
             value={search}
             onChange={handleSearch}
@@ -221,10 +241,10 @@ function Navbar() {
                 className="flex items-center gap-1 rounded-full w-full"
               >
                 <Bell className="font-semibold w-4 text-gray-700" />
-                <span className="ml-2">Notifications</span>
+                <span className="ml-1 text-xs">Notifications</span>
               </Button>
             </PopoverTrigger>
-            <PopoverContent className="w-full p-0">
+            <PopoverContent className="w-80 p-0">
               <div className="flex items-center justify-between text-gray-500 p-2">
                 <h4 className="text-md">Notification</h4> <CircleX />
               </div>
