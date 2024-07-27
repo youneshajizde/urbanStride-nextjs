@@ -5,14 +5,14 @@ import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import GlobalApi from "@/lib/GlobalApi";
-function DailyDeals() {
+
+const DailyDeals = () => {
   const settings = {
     dots: false,
     infinite: true,
     speed: 500,
     autoplay: true,
     autoplaySpeed: 1500,
-
     slidesToShow: 6,
     slidesToScroll: 2,
     responsive: [
@@ -44,6 +44,8 @@ function DailyDeals() {
   };
 
   const [newProducts, setNewProducts] = useState([]);
+  const [timeLeft, setTimeLeft] = useState(0);
+
   const getDailyDealsList = () => {
     GlobalApi.getDailyDeals().then((resp) => {
       const discountedProducts = resp.data.data.filter(
@@ -52,8 +54,26 @@ function DailyDeals() {
       setNewProducts(discountedProducts);
     });
   };
+
   useEffect(() => {
     getDailyDealsList();
+
+    // Set the initial timer end time
+    const endTime = localStorage.getItem("dailyDealsEndTime");
+    if (endTime) {
+      setTimeLeft(Math.max(0, new Date(endTime) - new Date()));
+    } else {
+      const newEndTime = new Date();
+      newEndTime.setHours(newEndTime.getHours() + 12);
+      localStorage.setItem("dailyDealsEndTime", newEndTime);
+      setTimeLeft(newEndTime - new Date());
+    }
+
+    const interval = setInterval(() => {
+      setTimeLeft((prevTimeLeft) => Math.max(0, prevTimeLeft - 1000));
+    }, 1000);
+
+    return () => clearInterval(interval);
   }, []);
 
   const items = newProducts.map((product) => {
@@ -78,18 +98,43 @@ function DailyDeals() {
       />
     );
   });
+
+  const formatTime = (milliseconds) => {
+    const totalSeconds = Math.floor(milliseconds / 1000);
+    const hours = String(Math.floor(totalSeconds / 3600)).padStart(2, "0");
+    const minutes = String(Math.floor((totalSeconds % 3600) / 60)).padStart(
+      2,
+      "0"
+    );
+    const seconds = String(totalSeconds % 60).padStart(2, "0");
+    return `${hours} : ${minutes} : ${seconds}`;
+  };
+
   return (
-    <section className=" bg-gray-100 rounded-3xl w-full mt-4 p-4 ">
+    <section className="bg-gray-100 rounded-3xl w-full mt-4 p-4">
       <div className="flex items-center justify-between">
         <h3 className="text-lg font-bold">Today Best Deals!</h3>
-        <span className="bg-gradient-to-r from-orange-500 to-orange-700 rounded-full py-1 px-3 text-white font-medium text-sm">
-          Ends in : 12 : 09 : 38
+        <span className="bg-gradient-to-r from-orange-500 to-orange-700 rounded-full py-1 px-3 text-white font-medium text-sm heartbeat">
+          Ends in: {formatTime(timeLeft)}
         </span>
       </div>
-
       <Slider {...settings}>{items}</Slider>
+      <style jsx>{`
+        @keyframes heartbeat {
+          0%,
+          100% {
+            transform: scale(1);
+          }
+          50% {
+            transform: scale(1.1);
+          }
+        }
+        .heartbeat {
+          animation: heartbeat 1s infinite;
+        }
+      `}</style>
     </section>
   );
-}
+};
 
 export default DailyDeals;

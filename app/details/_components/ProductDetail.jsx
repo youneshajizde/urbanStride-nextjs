@@ -1,13 +1,13 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
-import product from "../_images/p-2.webp";
-import brand from "../_images/nike.png";
-import verify from "../_images/verify.png";
 import { CircleCheck, ShoppingBag, Star } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { BeatLoader } from "react-spinners";
 import Link from "next/link";
+import { useDispatch } from "react-redux";
+import { addToCart } from "@/redux/features/cart-slice";
+import verify from "../_images/verify.png";
 
 function ProductDetail({
   dName,
@@ -25,11 +25,14 @@ function ProductDetail({
   const [mainImage, setMainImage] = useState(dImg);
   const [loading, setLoading] = useState(true);
   const discountedPrice = dPrice - (dPrice * dDiscount) / 100;
+  const dispatch = useDispatch();
+
   const override = {
     display: "block",
     margin: "0 auto",
     borderColor: "red",
   };
+
   useEffect(() => {
     if (details?.attributes?.image?.data) {
       const urls = details.attributes.image.data.map(
@@ -43,6 +46,17 @@ function ProductDetail({
       console.log("No images found");
     }
   }, [details]);
+
+  const handleAddToCart = () => {
+    const item = {
+      id: details?.id,
+      name: dName,
+      price: dDiscount ? discountedPrice : dPrice,
+      image: mainImage,
+      size: selectedSize,
+    };
+    dispatch(addToCart(item));
+  };
 
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mt-6">
@@ -125,7 +139,7 @@ function ProductDetail({
                   key={size}
                   onClick={() => setSelectedSize(size)}
                   className={`cursor-pointer relative w-[120px] flex items-center justify-center bg-gradient-to-r from-orange-500 to-orange-600 p-6 rounded-lg font-semibold text-lg ${
-                    selectedSize === size ? "text-white" : "text-gray-400"
+                    selectedSize === size ? "text-white" : "text-gray-200"
                   }`}
                 >
                   {size}
@@ -142,7 +156,10 @@ function ProductDetail({
                 Buy Now
               </Button>
             </Link>
-            <Button className="px-10 py-2 bg-black text-white rounded-full flex items-center gap-2">
+            <Button
+              className="px-10 py-2 bg-black text-white rounded-full flex items-center gap-2"
+              onClick={handleAddToCart}
+            >
               <ShoppingBag />
               Add To Bag
             </Button>
