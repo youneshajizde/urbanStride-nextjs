@@ -61,14 +61,7 @@ function Cart() {
                 <div className="flex flex-col justify-between flex-grow">
                   <h5 className="text-sm font-semibold mt-1">{item.name}</h5>
                   <span className="font-bold">{item.price}</span>
-                  <div className="flex items-center">
-                    <button
-                      className="bg-red-500 text-white px-2 rounded hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-opacity-50"
-                      onClick={() => dispatch(removeFromCart(item.id))}
-                    >
-                      Remove
-                    </button>
-                  </div>
+                  <div className="flex items-center"></div>
                 </div>
                 <div className="flex items-center justify-center">
                   <SquareX
