@@ -1,33 +1,37 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { clearShop } from "@/redux/features/shop-slice";
 
 const PaymentPage = () => {
   const [selectedCard, setSelectedCard] = useState(null);
-
+  const dispatch = useDispatch();
   const handleCardSelect = (cardType) => {
     setSelectedCard(cardType);
   };
+  useEffect(() => {
+    const handleBeforeUnload = () => {
+      dispatch(clearShop());
+    };
 
-  const product = {
-    name: "Cool Gadget",
-    description: "A cool gadget with many features.",
-    price: 199.99,
-    imageUrl: "https://via.placeholder.com/150",
-  };
+    window.addEventListener("beforeunload", handleBeforeUnload);
+
+    return () => {
+      window.removeEventListener("beforeunload", handleBeforeUnload);
+    };
+  }, [dispatch]);
+  const product = useSelector((state) => state.shop.product);
 
   return (
     <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100 p-2">
-      <div className="min-w-[400px] flex flex-col  items-center justify-center bg-white p-8 rounded-lg">
+      <div className="min-w-[400px] flex flex-col items-center justify-center bg-white p-8 rounded-lg">
         <div className="w-full max-w-md bg-white rounded-lg shadow-md p-5 mb-6">
-          <img
-            src={product.imageUrl}
-            alt={product.name}
-            className="h-32 mx-auto mb-4"
-          />
           <h2 className="text-lg font-semibold mb-1">{product.name}</h2>
-          <p className="text-gray-700 mb-2">{product.description}</p>
-          <p className="text-xl font-bold">${product.price.toFixed(2)}</p>
+          <p className="text-gray-700 mb-2 ">{product.size}</p>
+          <p className="text-xl font-bold">
+            ${product.price?.toFixed(2)} Rials
+          </p>
         </div>
 
         <h2 className="text-xl font-bold mb-4">Choose Your Payment Method</h2>

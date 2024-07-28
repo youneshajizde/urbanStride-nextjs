@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import { BeatLoader } from "react-spinners";
 import Link from "next/link";
 import { useDispatch } from "react-redux";
+import { addToShop } from "@/redux/features/shop-slice";
 import { addToCart } from "@/redux/features/cart-slice";
 import verify from "../_images/verify.png";
 
@@ -49,13 +50,26 @@ function ProductDetail({
 
   const handleAddToCart = () => {
     const item = {
+      image: mainImage,
+
       id: details?.id,
       name: dName,
       price: dDiscount ? discountedPrice : dPrice,
-      image: mainImage,
       size: selectedSize,
     };
     dispatch(addToCart(item));
+  };
+
+  const handleShop = () => {
+    dispatch(
+      addToShop({
+        image: dImg,
+        name: dName,
+        price: dPrice,
+        brand: dBrand,
+        size: selectedSize,
+      })
+    );
   };
 
   return (
@@ -151,14 +165,27 @@ function ProductDetail({
             </div>
           </div>
           <div className="flex items-center gap-14">
-            <Link href={`${details?.id}/payment`}>
-              <Button className="px-10 py-2 bg-black text-white rounded-full">
+            {selectedSize ? (
+              <Link href={`${details?.id}/payment`}>
+                <Button
+                  onClick={handleShop}
+                  className="px-10 py-2 bg-black text-white rounded-full"
+                >
+                  Buy Now
+                </Button>
+              </Link>
+            ) : (
+              <Button
+                disabled
+                className="px-10 py-2 bg-black text-white rounded-full"
+              >
                 Buy Now
               </Button>
-            </Link>
+            )}
             <Button
               className="px-10 py-2 bg-black text-white rounded-full flex items-center gap-2"
               onClick={handleAddToCart}
+              disabled={!selectedSize}
             >
               <ShoppingBag />
               Add To Bag
