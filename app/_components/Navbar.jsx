@@ -46,7 +46,6 @@ function Navbar() {
       setUsername(user.username);
     }
 
-    // Check badge status only if logged in
     if (token) {
       const badgeStatus = localStorage.getItem("badgeStatus");
       setShowBadge(badgeStatus === "visible");

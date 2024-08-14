@@ -11,7 +11,7 @@ function RegisterPage() {
   const [password, setPassword] = useState("");
   const router = useRouter();
   const onCreateAccount = (event) => {
-    event.preventDefault(); // Prevent the default form submission behavior
+    event.preventDefault();
     GlobalApi.registerUser(username, email, password).then(
       (resp) => {
         console.log(resp.data.user);
