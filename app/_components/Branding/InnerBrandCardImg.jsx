@@ -6,8 +6,8 @@ function InnerBrandCardImg({ img }) {
       <Image
         src={img}
         alt="Brand"
-        width={0} // Set to a fixed size for better control
-        height={0} // Set to a fixed size for better control
+        width={0}
+        height={0}
         sizes="100vw"
         objectFit="cover"
         fill
